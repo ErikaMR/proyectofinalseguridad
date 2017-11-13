@@ -1,0 +1,121 @@
+<html>
+<head>
+	<title>Cifrado César</title>
+	<meta charset="uft-8">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">	
+</head>
+		<br>
+		<h1 style="color:#1976d2"><b>Cifrado César </b></h1><br>
+		<p><b>Descripción:</b></p>
+		El cifrado cesar es un método de cifrado por transposición o desplazamiento. Su origen se remonta a la antigua Roma donde julio cesar lo utilizaba para hacer llegar sus órdenes a sus generales en batalla con el fin de que si el mensaje era interceptado por el enemigo este no pudiera leerlo. 
+		<br><br>
+		El cifrado funciona desplazando las letras según el numero clave por ejemplo, la letra A se cambiaría por la D si nuestra clave fuera 3, y la B pasaría a ser E y así sucesivamente.
+		<br><br>
+		Mensaje Cifrado: C = M + [K mod |A|]
+		<br>
+		Mensaje Descifrado: M = C - [K mod |A|]
+		</p>
+		<br>
+  <body class="container">
+  			<form>
+  				<label><b>Inserta el alfabeto (A):</b></label>
+  				<br>
+  				<input class="form-control" type="text" size="25" maxlength=256 required/>
+  				<br>
+			  	<label><b>Inserta el texto a cifrar (M) o descifrar (C):</b></label>
+			  	<br>
+			  	<input class="form-control" type="text" size="25" maxlength=256 required/>
+			  	<br>
+			  	<label><b>Inserta la clave (K):</b></label>
+			  	<br>
+			  	<input class="form-control" type="number" size="256"/>
+			  	<br><br>
+			  	<button class="btn btn-primary" type="reset"> <b>Limpiar</b></button>
+			  	<br><br>
+		  	</form>
+			  	<button class="btn btn-primary" onclick="encriptar()" ><b>Encriptar</b></button>
+			  	<button class="btn btn-primary" onclick="desencriptar()" ><b>Desencriptar</b></button>
+			  	<br><br>
+		  	<label><b>Resultado:</b></label>
+		  	<p type="text" id="resultado" disabled></p>
+		  	<br><br><br>
+		  	<a href="/index.html"><button class="btn btn-primary">Menú Principal</button></a> 
+	    <script src="bundle.js"></script>
+
+	<script scr="app.js">
+		
+		function encriptar(){
+			var alfabeto = document.getElementsByTagName("input")[0].value; //Obtiene el alfabeto a utilizar
+			alfabeto = alfabeto.toUpperCase(); // Pasa el alfabeto a letras mayúsculas
+			longalfabeto = alfabeto.length;
+			var cadena = document.getElementsByTagName("input")[1].value; // Obtiene el mensaje a cifrar 
+			cadena = cadena.toUpperCase(); // Pasa el mensaje a letras mayúsculas
+			var clave = document.getElementsByTagName("input")[2].value; // Obtiene la clave para realizar el cifrado
+
+		   	var result = ""; //Cadena de salida vacía en donde se guardará el resultado
+		    var permitido = true; // Validará los caracteres del mensaje
+		    	for (var i = 0; i < cadena.length; i++) {
+		    		var indice = null; // Validará el alfabeto y guardará ahí los caracteres del mensaje
+		    		for (var x = 0; x < alfabeto.length; x++) {
+		    			if(alfabeto[x] == cadena[i]){ // Valida si el caracter del mensaje coincide con algún caracter del alfabeto declarado
+		    				indice = x; // Se guardarán los caracteres validados
+		    				break;
+		    			}
+		    		}
+		    		if(indice == null){ // Si el alfabeto está vacio, la variable cambia a falso, para enviar una alerta al usuario
+		    			permitido=false;
+		    		}
+		    		if(permitido){
+		    			valor = x+parseInt(clave); //parseInt pasa los valores de la clave como numeros y avanza los espacios necesarios
+		    		if(valor+1>longalfabeto){ // Se utiliza en las ultimas letras del alfabeto para regresar al inicio
+			    		valor = valor - longalfabeto;
+			    	}
+		    			result += alfabeto[valor]; // Guarda el mensaje final
+		    		}
+		    	}
+		    	if(permitido){
+		    		document.getElementById('resultado').innerHTML = result; //Manda el resultado final
+		    	}else{
+		    		alert("¡Hay carácteres que NO están en el alfabeto!")
+		    	}
+		}
+
+		function desencriptar(elemento){
+			var alfabeto = document.getElementsByTagName("input")[0].value; //Obtiene el alfabeto a utilizar
+			alfabeto = alfabeto.toUpperCase();  // Pasa el alfabeto a letras mayúsculas
+			longalfabeto = alfabeto.length;
+			var cadena = document.getElementsByTagName("input")[1].value;  // Obtiene el mensaje a cifrar 
+			cadena = cadena.toUpperCase(); // Pasa el mensaje a letras mayúsculas
+			var clave = document.getElementsByTagName("input")[2].value;  // Obtiene la clave para realizar el cifrado
+
+		    var result = ""; //Cadena de salida vacía en donde se guardará el resultado
+		    var permitido = true; // Validará los caracteres del mensaje
+		    	for (var i = 0; i < cadena.length; i++) {
+		    		var indice = null; // Validará el alfabeto y guardará ahí los caracteres del mensaje
+		    		for (var x = 0; x < alfabeto.length; x++) {
+		    			if(alfabeto[x] == cadena[i]){ // Valida si el caracter del mensaje coincide con algún caracter del alfabeto declarado
+		    				indice = x; // Se guardarán los caracteres validados
+		    				break;
+		    			}
+		    		}
+		    		if(indice == null){ // Si el alfabeto está vacio, la variable cambia a falso, para enviar una alerta al usuario
+		    			permitido=false;
+		    		}
+		    		if(permitido){
+		    			valor = x-parseInt(clave); //parseInt pasa los valores de la clave como numeros y retrocede los espacios necesarios
+		    			if(valor< 0){ // Se utiliza en las primeras letras del alfabeto para ir al final
+			    			valor = valor + longalfabeto; 
+			    		}
+		    				result += alfabeto[valor]; //Guarda el mensaje final 
+		    			}
+		    	}
+		    	if(permitido){
+		    		document.getElementById('resultado').innerHTML = result;  //Manda el resultado final
+		    	}else{
+		    		alert("¡Hay carácteres que NO están en el alfabeto!")
+		    	}
+		}
+
+	</script>
+  </body>
+</html>

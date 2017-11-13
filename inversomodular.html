@@ -1,0 +1,60 @@
+<html>
+<head>
+	<title>Inverso Modular</title>
+	<meta charset="uft-8">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">	
+</head>
+		<br>
+		<h1 style="color:#1976d2"><b>Inverso Modular</b></h1>
+		<p><b>Descripción:</b>
+		<br><br>
+		Permite calcular el máximo común divisor de dos números y expresarlo como una combinación líneal. Tiene aplicación en diversas áreas como álgebra, teoría de números y ciencias de computación. 
+		<br><br>
+		Sí ambos números son primos: 
+		<br>
+		nm (mod p)=1      -->   [ AEE(n,p) ]
+		<br><br></p>
+  <body class="container">
+  			<form>
+  				<label><b>Introduce n:</b></label>
+  				<br>
+  				<input class="form-control" type="text" size="25" maxlength=256 required/>
+  				<br>
+			  	<label><b>Introduce m:</b></label>
+			  	<br>
+			  	<input class="form-control" type="text" size="25" maxlength=256 required/>
+			  	<br><br>
+			  	<button class="btn btn-primary" type="reset"> <b>Limpiar</b></button>
+		  	</form>
+			  	<button class="btn btn-primary" onclick="calcular()" ><b>calcular</b></button>
+			  	<br><br>
+		  	<label><b>Resultado:</b></label>
+		  	<p type="text" id="resultado" disabled></p>
+			<br><br>
+		  	<label><b>Procedimiento:</b></label>
+		  	<p type="text" id="resultado" disabled></p>
+		  	<br><br><br><br><br><br>
+		  	<a href="/index.html"><button class="btn btn-primary">Menú Principal</button></a> 
+	    <script src="bundle.js"></script>
+
+	<script scr="app.js">
+
+		
+		
+		function calcular(){
+			var n = document.getElementsByTagName("input")[0].value; 
+			var m = document.getElementsByTagName("input")[1].value; 
+
+			if(n<0){
+			    n= n *-1;
+			}
+			if(m<0){
+			    m = m *-1;
+			}
+		}
+
+
+
+	</script>
+  </body>
+</html>

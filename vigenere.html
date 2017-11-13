@@ -1,0 +1,202 @@
+<html>
+<head>
+	<title>Cifrado Vigenère</title>
+	<meta charset="uft-8">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">	
+</head>
+		<br>
+		<h1 style="color:#1976d2"><b>Cifrado Vigenère</b></h1><br>
+		<p><b>Descripción: </b>
+		<br><br>
+		El cifrado de Vigenère es un cifrado de sustitución simple polialfabético. Este se ha reinventado muchas veces. El método original fue descrito por Giovan Battista, sin embargo fue atribuido más tarde a Blaise de Vigenère, en el siglo XIX. Por ello se le conoce como el Cifrado Vigenère. 
+		<br><br>Este cifrado es conocido porque es fácil de entender e implementar, además parece irresoluble. Esto lo hizo acreedor del apodo el código indescifrable
+		<br><br>
+		Algoritmo Cifrado: C = (M + K) mod |A|
+		<br>
+		Algoritmo Descifrado: M = (C - K) mod |A|
+		</p>
+  <body class="container">
+  			<form>
+  				<label><b>Inserta el alfabeto (A):</b></label>
+  				<br>
+  				<input class="form-control" type="text" size="25" maxlength=256 required/>
+  				<br>
+			  	<label><b>Inserta el mensaje a cifrar (M) o descifrar (C):</b></label>
+			  	<br>
+			  	<input class="form-control" type="text" size="25" maxlength=256 required/>
+			  	<br>
+			  	<label><b>Inserta la clave (K):</b></label>
+			  	<br>
+			  	<input class="form-control" type="text" size="256"/>
+			  	<br><br>
+			  	<button class="btn btn-primary" type="reset"> <b>Limpiar</b></button>
+			  	<br><br>
+		  	</form>
+			  	<button class="btn btn-primary" onclick="cifrar()" ><b>Encriptar</b></button>
+			  	<button class="btn btn-primary" onclick="descifrar()" ><b>Desencriptar</b></button>
+			  	<br><br>
+		  	<label><b>Resultado:</b></label>
+		  	<p type="text" id="resultado" disabled></p>
+		  	<br><br><br>
+		  	<a href="/index.html"><button class="btn btn-primary">Menú Principal</button></a> 
+	    <script src="bundle.js"></script>
+
+	<script scr="app.js">
+		
+		function cifrar(){
+			var alfabeto = document.getElementsByTagName("input")[0].value; 
+			alfabeto = alfabeto.toUpperCase();
+			longalfabeto = alfabeto.length;
+			var mensaje = document.getElementsByTagName("input")[1].value; // Obtiene el mensaje a cifrar
+			mensaje = mensaje.toUpperCase(); // Pasa el mensaje a letras mayúsculas
+			var clave = document.getElementsByTagName("input")[2].value; // Obtiene la clave para realizar el cifrado
+			clave = clave.toUpperCase(); // Pasa la clave a letras mayúsculas
+
+			var nueva=""; // variable en donde se guardará el resultado del cifrado
+			var arreglo = mensaje.split(""); // Separa cada carácter del mensaje; Por ejemplo A,B,C
+			var arreglo2 = clave.split(""); // Separa cada carácter de la clave; Por ejemplo A,B,C
+			var base=0; //Variable utilizada guardar los caracteres para igualar la longitud del mensaje y la clave
+
+			var permitido = true; 
+		    	for (var i = 0; i < mensaje.length; i++) { 
+		    		var indice = null;
+		    		for (var x = 0; x < alfabeto.length; x++) {
+		    			if(alfabeto[x] == mensaje[i]){ // Compara si los caracteres del mensaje son iguales a los declarados en el alfabeto.
+		    				indice = x;
+		    				break;
+		    			}
+		    		}
+		    		if(indice == null){ // Comprueba si el alfabeto está vacio
+		    			permitido=false;
+		    		}
+		    		if(permitido){
+		    			while(arreglo.length>arreglo2.length){ // Si la longitud del mensaje es mayor, la clave necesita complementar su longitud
+				    	base = arreglo.length-arreglo2.length; // Realiza la resta para identificar cuántos caracteres son necesarios y realizar el for
+				    	for (var i = 0; i < base; i++) {    
+				        if(typeof arreglo2[i]==="undefined") // Verifica si algún elemento de la clave está vacia
+				        {
+				        	break;
+				        }else{
+				            clave+=arreglo2[i]; // Agrega a la clave los caracteres necesarios para igualar la longitud del mensaje
+				        	}
+				    	}
+				    		arreglo2 = clave.split(""); // Asegura que se vuelva un array otra vez
+			    		}
+
+			    		var tam = arreglo.length; //Guarda la longitud del mensaje 
+						var val=[], val2=[], val3=[]; // Guardan la posición de los caracteres del mensaje y la clave de acuerdo al alfabeto declarado
+
+						for (var i = 0; i < tam; i++){
+						    for (var x=0; x < alfabeto.length; x++){
+						        if(arreglo[i]==alfabeto[x]){ // Recorre el alfabeto y lo compara con el caracter del mensaje para asignarle la posición que le corresponde
+						            val.push(alfabeto.indexOf(arreglo[i])); // Guarda la posición de cada caracter del mensaje, de acuerdo al alfabeto
+						        }
+						    }
+						    for (var x=0; x < alfabeto.length; x++){ 
+						        if(arreglo2[i]==alfabeto[x]){ // Recorre el alfabeto y lo compara con el caracter de la clave para asignarle la posición que le corresponde
+						            val2.push(alfabeto.indexOf(arreglo2[i])); // Guarda la posición de cada caracter de la clave, de acuerdo al alfabeto
+						        }
+						    }
+						}
+
+						function mod(n, m){ // Realiza la operación modulo del resultado de la suma del caracter correspondiente (mensaje + clave) mod longitud del alfabeto 
+						    return ((n % m) + m) % m;
+						}
+
+						for (var i = 0; i < tam; i++){  
+						    val3.push(mod((val[i]+val2[i]),alfabeto.length)); //Manda a llamar a la función mod 
+						}
+
+						for (var i = 0; i < tam; i++){ // Devuelve los valores de arreglo val3 y los guarda en la variable nueva, de acuerdo al caracter que le corresponde del alfabeto
+						    nueva += alfabeto[val3[i]];
+						}
+
+		    		}
+		    	if(permitido){
+		    		document.getElementById('resultado').innerHTML = nueva; 
+		    	}else{
+		    		alert("¡Error, hay carácteres que NO están en el alfabeto!")
+		    	}
+			}
+		}
+
+		function descifrar(){
+			var alfabeto = document.getElementsByTagName("input")[0].value; //Obtiene el alfabeto a utilizar 
+			alfabeto = alfabeto.toUpperCase(); 
+			longalfabeto = alfabeto.length;
+			var mensaje = document.getElementsByTagName("input")[1].value; // Obtiene el mensaje a cifrar
+			mensaje = mensaje.toUpperCase(); // Pasa el mensaje a letras mayúsculas
+			var clave = document.getElementsByTagName("input")[2].value; // Obtiene la clave para realizar el cifrado
+			clave = clave.toUpperCase(); // Pasa la clave a letras mayúsculas
+
+			var nueva=""; // variable en donde se guardará el resultado del cifrado
+			var arreglo = mensaje.split(""); // Separa cada carácter del mensaje; Por ejemplo A,B,C
+			var arreglo2 = clave.split(""); // Separa cada carácter de la clave; Por ejemplo A,B,C
+			var base=0; //Variable utilizada guardar los caracteres para igualar la longitud del mensaje y la clave
+
+			var permitido = true; 
+		    	for (var i = 0; i < mensaje.length; i++) { 
+		    		var indice = null;
+		    		for (var x = 0; x < alfabeto.length; x++) {
+		    			if(alfabeto[x] == mensaje[i]){ // Compara si los caracteres del mensaje son iguales a los declarados en el alfabeto.
+		    				indice = x;
+		    				break;
+		    			}
+		    		}
+		    		if(indice == null){ // Comprueba si el alfabeto está vacio
+		    			permitido=false;
+		    		}
+		    		if(permitido){
+		    			while(arreglo.length>arreglo2.length){ // Si la longitud del mensaje es mayor, la clave necesita complementar su longitud
+				    	base = arreglo.length-arreglo2.length; // Realiza la resta para identificar cuántos caracteres son necesarios y realizar el for
+				    	for (var i = 0; i < base; i++) {    
+				        if(typeof arreglo2[i]==="undefined") // Verifica si algún elemento de la clave está vacia
+				        {
+				        	break;
+				        }else{
+				            clave+=arreglo2[i]; // Agrega a la clave los caracteres necesarios para igualar la longitud del mensaje
+				        	}
+				    	}
+				    		arreglo2 = clave.split(""); // Asegura que se vuelva un array otra vez
+			    		}
+
+			    		var tam = arreglo.length; //Guarda la longitud del mensaje 
+						var val=[], val2=[], val3=[]; // Guardan la posición de los caracteres del mensaje y la clave de acuerdo al alfabeto declarado
+
+						for (var i = 0; i < tam; i++){
+						    for (var x=0; x < alfabeto.length; x++){
+						        if(arreglo[i]==alfabeto[x]){ // Recorre el alfabeto y lo compara con el caracter del mensaje para asignarle la posición que le corresponde
+						            val.push(alfabeto.indexOf(arreglo[i])); // Guarda la posición de cada caracter del mensaje, de acuerdo al alfabeto
+						        }
+						    }
+						    for (var x=0; x < alfabeto.length; x++){ 
+						        if(arreglo2[i]==alfabeto[x]){ // Recorre el alfabeto y lo compara con el caracter de la clave para asignarle la posición que le corresponde
+						            val2.push(alfabeto.indexOf(arreglo2[i])); // Guarda la posición de cada caracter de la clave, de acuerdo al alfabeto
+						        }
+						    }
+						}
+
+						function mod(n, m){ // Realiza la operación modulo del resultado de la suma del caracter correspondiente (mensaje + clave) mod longitud del alfabeto 
+						    return ((n % m) + m) % m;
+						}
+
+						for (var i = 0; i < tam; i++){  
+						    val3.push(mod((val[i]-val2[i]),alfabeto.length)); //Manda a llamar a la función mod 
+						}
+
+						for (var i = 0; i < tam; i++){ // Devuelve los valores de arreglo val3 y los guarda en la variable nueva, de acuerdo al caracter que le corresponde del alfabeto
+						    nueva += alfabeto[val3[i]]; // Guarda el resultado final 
+						}
+
+		    		}
+		    	if(permitido){
+		    		document.getElementById('resultado').innerHTML = nueva; // Regresa el resultado
+		    	}else{ 
+		    		alert("¡Hay carácteres que NO están en el alfabeto!")
+		    	}
+			}
+		}
+	</script>
+  </body>
+</html>
+

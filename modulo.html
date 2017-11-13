@@ -1,0 +1,47 @@
+<head>
+	<title>Módulo</title>
+	<meta charset="uft-8">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">	
+</head>
+		<br>
+		<h1 style="color:#1976d2"><b>Módulo</b></h1>
+		<p><b>Descripción:</b>
+		<br><br>
+		El módulo de un número es un concepto clave puesto que lo utilizamos en infinidad de operaciones matemáticas. El módulo, es una operación que se utiliza para calcular el resto de la operación de división. Cuando se divide un número 'n' entre 'p', también se puede expresar como 'n mod p', que es el resto.
+		<br><br>
+		n(mod p)= m 
+		<br><br></p>
+  <body class="container">
+  			<form>
+  				<label><b>Introduce n:</b></label>
+  				<br>
+  				<input class="form-control" type="text" size="25" maxlength=256 required/>
+  				<br>
+			  	<label><b>Introduce p:</b></label>
+			  	<br>
+			  	<input class="form-control" type="text" size="25" maxlength=256 required/>
+			  	<br><br>
+			  	<button class="btn btn-primary" type="reset"> <b>Limpiar</b></button>
+		  	</form>
+			  	<button class="btn btn-primary" onclick="modulo()" ><b>calcular</b></button>
+			  	<br><br>
+		  	<label><b>Resultado (m):</b></label>
+		  	<p type="text" id="resultado" disabled></p>
+		  	<br><br><br><br><br><br>
+		  	<a href="/index.html"><button class="btn btn-primary">Menú Principal</button></a> 
+	    <script src="bundle.js"></script>
+
+	<script scr="app.js">
+		
+		function modulo(){
+		var n = document.getElementsByTagName("input")[0].value; 
+		var p = document.getElementsByTagName("input")[1].value; 
+
+		var result = null;
+		result = (((n % p) + p) %p);
+		window.alert(result);
+		}
+
+	</script>
+  </body>
+</html>
